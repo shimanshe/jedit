@@ -119,7 +119,7 @@ public class jEdit
 
         setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-		args = new String[]{"-log=1"};
+//		args = new String[]{"-log=1"};
 		// doing a copy to log it later as original args array is modified
 		String[] _args = args.clone();
 		//{{{ Check for Java 11 or later
@@ -341,14 +341,14 @@ public class jEdit
 				// ok, this one seems to confuse newbies
 				// endlessly, so log it as NOTICE, not
 				// ERROR
-				Log.log(Log.NOTICE,jEdit.class,"An error occurred"
-					+ " while connecting to the jEdit server instance.");
-				Log.log(Log.NOTICE,jEdit.class,"This probably means that"
-					+ " jEdit crashed and/or exited abnormally");
-				Log.log(Log.NOTICE,jEdit.class,"the last time it was run.");
-				Log.log(Log.NOTICE,jEdit.class,"If you don't"
-					+ " know what this means, don't worry.");
-				Log.log(Log.NOTICE,jEdit.class,e);
+//				Log.log(Log.NOTICE,jEdit.class,"An error occurred"
+//					+ " while connecting to the jEdit server instance.");
+//				Log.log(Log.NOTICE,jEdit.class,"This probably means that"
+//					+ " jEdit crashed and/or exited abnormally");
+//				Log.log(Log.NOTICE,jEdit.class,"the last time it was run.");
+//				Log.log(Log.NOTICE,jEdit.class,"If you don't"
+//					+ " know what this means, don't worry.");
+//				Log.log(Log.NOTICE,jEdit.class,e);
 			}
 			finally
 			{

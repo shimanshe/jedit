@@ -140,7 +140,7 @@ public class VFSFileChooserDialog extends EnhancedDialog
 				dispose();
 			}
 			else
-				browser.filesActivated(VFSBrowser.M_OPEN,false);
+				browser.filesActivated(VFSBrowser.M_OPEN,false, -1);
 			return;
 		}
 		else if(choosingDir && (filename == null || filename.isEmpty()))

@@ -76,6 +76,7 @@ public class FileCellRenderer extends DefaultTableCellRenderer
 
 			setFont(file.getType() == VFSFile.FILE
 				? plainFont : boldFont);
+			setFont(plainFont);
 
 			this.isSelected = isSelected;
 			this.file = file;
@@ -141,6 +142,7 @@ public class FileCellRenderer extends DefaultTableCellRenderer
 		if(!isSelected)
 		{
 			Color color = file.getColor();
+			color = null;
 
 			setForeground(color == null
 				? UIManager.getColor("Tree.foreground")

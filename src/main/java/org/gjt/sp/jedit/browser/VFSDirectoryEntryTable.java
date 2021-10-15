@@ -182,6 +182,8 @@ public class VFSDirectoryEntryTable extends JTable
 		= (VFSDirectoryEntryTableModel)getModel();
 
 		Entry entry = model.files[row];
+
+
 		if(entry.dirEntry.getType() == VFSFile.FILE)
 			return;
 
@@ -410,7 +412,7 @@ public class VFSDirectoryEntryTable extends JTable
 				browserView.getBrowser().filesActivated(
 					evt.isShiftDown()
 					? VFSBrowser.M_OPEN_NEW_VIEW
-					: VFSBrowser.M_OPEN,false);
+					: VFSBrowser.M_OPEN,false, -1);
 
 				break;
 			}

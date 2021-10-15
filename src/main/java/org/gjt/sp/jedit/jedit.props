@@ -193,7 +193,7 @@ buffer.undoCount=100
 buffer.wrap=none
 
 # Wrap column
-buffer.maxLineLen=80
+buffer.maxLineLen=120
 
 # Word break characters
 buffer.wordBreakChars=
@@ -229,7 +229,8 @@ view.showBufferSwitcher=true
 view.showFullPath=false
 
 # Font
-view.font=Monospaced
+# view.font=Monospaced
+view.font=Microsoft YaHei
 view.fontsize=12
 # 0=plain, 1=bold, 2=italic, 3=boldItalic
 view.fontstyle=0
@@ -246,6 +247,8 @@ view.fgColor=#000000
 view.lineHighlight=true
 view.lineHighlightColor=#ffffe0
 
+options.textarea.lineSpacing=1
+
 # Bracket highlighting
 view.structureHighlight=true
 view.structureHighlightColor=#000000
@@ -257,14 +260,16 @@ view.eolMarkerChar=↩
 
 # Wrap guide
 view.wrapGuide=true
-view.wrapGuideColor=#8080ff
+# view.wrapGuideColor=#8080ff
+view.wrapGuideColor=#dbdbdb
 
 # page breaks
 view.pageBreaks=false
 view.pageBreaksColor=#8080ff
 
 # Caret color
-view.caretColor=#ff0000
+view.caretColor=#000000
+view.thickCaret=true
 
 # Selection color
 view.selectionColor=#ccccff
@@ -535,3 +540,8 @@ lang.usedefaultlocale=true
 
 # Enable subpixel antialiasing by default in textarea.
 view.antiAlias=subpixel HRGB
+
+view.style.foldLine.0=color\:\#ff000000 bgColor\:\#ffffffff style\:b
+view.style.foldLine.1=color\:\#ff000000 bgColor\:\#ffffffff style\:b
+view.style.foldLine.2=color\:\#ff000000 bgColor\:\#ffffffff style\:b
+view.style.foldLine.3=color\:\#ff000000 bgColor\:\#ffffffff style\:b

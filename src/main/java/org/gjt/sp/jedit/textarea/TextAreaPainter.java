@@ -1493,7 +1493,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
 			if(textArea.isOverwriteEnabled())
 			{
 				if (thickCaret)
-					gfx.fillRect(caretX, y + lineHeight - 4, textArea.charWidth, 3);
+					gfx.fillRect(caretX, y + lineHeight - 4, textArea.charWidth, 2);
 
 				else  gfx.drawLine(caretX, y + lineHeight - 1,
 					caretX + textArea.charWidth, y + lineHeight - 1);
@@ -1504,7 +1504,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
 			else
 			{
 				if (thickCaret)
-					gfx.fillRect(caretX, y + charOffset, 3, charHeight - 1);
+					gfx.fillRect(caretX, y + charOffset, 2, charHeight - 1);
 				else
 					gfx.drawLine(caretX, y + charOffset, caretX,
 							 y + charOffset + charHeight - 1);

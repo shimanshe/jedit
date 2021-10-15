@@ -109,7 +109,7 @@ public class FileRootsVFS extends VFS
 		else
 		{
 			File[] roots = File.listRoots();
-			File[] desktop = fsView.getRoots();
+			File[] desktop = null;//fsView.getRoots();
 
 			if(desktop == null)
 				return roots;
@@ -144,8 +144,13 @@ public class FileRootsVFS extends VFS
 			else if(fsView.isDrive(file))
 			{
 				setType(VFSFile.FILESYSTEM);
-				setName(path + ' '
-					+ fsView.getSystemDisplayName(file));
+//				String displayName = fsView.getSystemDisplayName(file);
+//				if(displayName==null || displayName.trim().isEmpty()){
+//					displayName = path;
+//				}
+//				setName(path + ' '
+//					+ fsView.getSystemDisplayName(file));
+				setName(path.replace("\\", ""));
 			}
 			else if(file.isDirectory())
 			{

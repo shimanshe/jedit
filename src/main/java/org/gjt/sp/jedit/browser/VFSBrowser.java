@@ -1194,7 +1194,7 @@ public class VFSBrowser extends JPanel implements DefaultFocusComponent,
 	 * <code>browser.actions.xml</code> can bind to it.
 	 * @since jEdit 4.2pre2
 	 */
-	public void filesActivated(int mode, boolean canDoubleClickClose)
+	public void filesActivated(int mode, boolean canDoubleClickClose, int row)
 	{
 		VFSFile[] selectedFiles = browserView.getSelectedFiles();
 
@@ -1208,8 +1208,11 @@ check_selected:
 			{
 				if (mode == M_OPEN_NEW_VIEW && this.mode == BROWSER)
 					browseDirectoryInNewWindow(view, file.getPath());
-				else if (selectedFiles.length == 1)
-					setDirectory(file.getPath());
+				else if (selectedFiles.length == 1) {
+//                    setDirectory(file.getPath());
+                    browserView.getTable().toggleExpanded(row);
+//				    table.toggleExpanded(row);
+                }
 			}
 			else if (this.mode == BROWSER || this.mode == BROWSER_DIALOG)
 			{

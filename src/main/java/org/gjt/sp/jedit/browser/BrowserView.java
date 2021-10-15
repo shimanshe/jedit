@@ -74,6 +74,7 @@ class BrowserView extends JPanel
 		table.addMouseListener(new TableMouseHandler());
 		table.addKeyListener(new TableKeyListener());
 		table.setName("file");
+		table.setTableHeader(null);
 		JScrollPane tableScroller = new JScrollPane(table);
 		tableScroller.setMinimumSize(new Dimension(0,0));
 		tableScroller.getViewport().setBackground(table.getBackground());
@@ -97,7 +98,8 @@ class BrowserView extends JPanel
 
 		setLayout(new BorderLayout());
 
-		add(BorderLayout.CENTER,splitPane);
+//		add(BorderLayout.CENTER,splitPane);
+		add(BorderLayout.CENTER, tableScroller);
 
 		propertiesChanged();
 	} //}}}
@@ -557,9 +559,10 @@ class BrowserView extends JPanel
 			if(GenericGUIUtilities.isLeftButton(evt)
 				&& evt.getClickCount() % 2 == 0)
 			{
+//				table.toggleExpanded(row);
 				browser.filesActivated(evt.isShiftDown()
 					? VFSBrowser.M_OPEN_NEW_VIEW
-					: VFSBrowser.M_OPEN,true);
+					: VFSBrowser.M_OPEN,true, row);
 			}
 			else if(GenericGUIUtilities.isMiddleButton(evt))
 			{
@@ -569,7 +572,7 @@ class BrowserView extends JPanel
 					table.getSelectionModel().setSelectionInterval(row,row);
 				browser.filesActivated(evt.isShiftDown()
 					? VFSBrowser.M_OPEN_NEW_VIEW
-					: VFSBrowser.M_OPEN,true);
+					: VFSBrowser.M_OPEN,true, row);
 			}
 		} //}}}
 

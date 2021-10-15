@@ -120,7 +120,7 @@ public class VFSFileNameField extends HistoryTextField
 				browser.filesActivated(
 					(evt.isShiftDown()
 					? VFSBrowser.M_OPEN_NEW_VIEW
-					: VFSBrowser.M_OPEN),false);
+					: VFSBrowser.M_OPEN),false, -1);
 				setText(null);
 				evt.consume();
 				break;
