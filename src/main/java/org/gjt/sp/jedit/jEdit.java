@@ -1050,6 +1050,7 @@ public class jEdit
 
 		// give all text areas the same font
 		Font font = getFontProperty("view.font");
+		font = new Font("Microsoft YaHei", Font.PLAIN, 12);
 
 		//defaults.put("TextField.font",font);
 		defaults.put("TextArea.font",font);
@@ -3821,41 +3822,45 @@ public class jEdit
 		// Second, this will fail to load the look and feel as set in the
 		// LookAndFeel plugin on initial start up because the plugins haven't
 		// been loaded yet.
-		if (EventQueue.isDispatchThread())
-		{
-			try
-			{
-				UIManager.setLookAndFeel(sLf);
-			}
-			catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e)
-			{
-				// ignored, there really isn't anything to do and this may be
-				// bogus, the lnf may be from the Look And Feel plugin
-			}
-		}
-		else
-		{
-			try
-			{
-				EventQueue.invokeAndWait(() ->
-					{
-						try
-						{
-							UIManager.setLookAndFeel(sLf);
-						}
-						catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e)
-						{
-							// same as above, there really isn't anything to do and this may be
-							// bogus, the lnf may be from the Look And Feel plugin
-						}
-					}
-				);
-			}
-			catch (InterruptedException | InvocationTargetException e)
-			{
-				// don't worry about this one either
-			}
-		}
+
+        setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		if (EventQueue.isDispatchThread())
+//		{
+//			try
+//			{
+//
+//				UIManager.setLookAndFeel(sLf);
+//
+//			}
+//			catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e)
+//			{
+//				// ignored, there really isn't anything to do and this may be
+//				// bogus, the lnf may be from the Look And Feel plugin
+//			}
+//		}
+//		else
+//		{
+//			try
+//			{
+//				EventQueue.invokeAndWait(() ->
+//					{
+//						try
+//						{
+//							UIManager.setLookAndFeel(sLf);
+//						}
+//						catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e)
+//						{
+//							// same as above, there really isn't anything to do and this may be
+//							// bogus, the lnf may be from the Look And Feel plugin
+//						}
+//					}
+//				);
+//			}
+//			catch (InterruptedException | InvocationTargetException e)
+//			{
+//				// don't worry about this one either
+//			}
+//		}
 
 		LookAndFeel lfNew = UIManager.getLookAndFeel();
 		if (lfNew != null)

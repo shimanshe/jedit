@@ -31,6 +31,8 @@ import java.awt.event.MouseEvent;
 import java.awt.font.*;
 import java.awt.*;
 import java.util.*;
+
+import org.gjt.sp.jedit.GUIUtilities;
 import org.gjt.sp.jedit.buffer.IndentFoldHandler;
 import org.gjt.sp.jedit.buffer.JEditBuffer;
 import org.gjt.sp.jedit.syntax.Chunk;
@@ -895,6 +897,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
 			int lastLine = (clipRect.y + clipRect.height - 1) / lineHeight;
 			gfx.setColor(getBackground());
 			gfx.setFont(getFont());
+			Font font = getFont();
+			gfx.setFont(new Font(GUIUtilities.fontName, font.getStyle(), font.getSize()));
 			prepareTime = System.nanoTime() - prepareTime;
 
 			long linesTime = System.nanoTime();

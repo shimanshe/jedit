@@ -30,6 +30,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
+import org.gjt.sp.jedit.GUIUtilities;
 import org.gjt.sp.jedit.Registers;
 import org.gjt.sp.jedit.buffer.BufferAdapter;
 import org.gjt.sp.jedit.buffer.BufferListener;
@@ -153,6 +154,7 @@ public class Gutter extends JComponent implements SwingConstants
 		// fill the background
 		Rectangle clip = gfx.getClipBounds();
 		gfx.setColor(getBackground());
+		gfx.setColor(GUIUtilities.gutterBgColor);
 		int bgColorWidth = isSelectionAreaEnabled() ? FOLD_MARKER_SIZE :
 			clip.width; 
 		gfx.fillRect(clip.x, clip.y, bgColorWidth, clip.height);
@@ -160,10 +162,12 @@ public class Gutter extends JComponent implements SwingConstants
 		{
 			if (selectionAreaBgColor == null)
 				selectionAreaBgColor = getBackground();
-			gfx.setColor(selectionAreaBgColor);
+//			gfx.setColor(selectionAreaBgColor);
+//			gfx.setColor(new Color(255, 250, 227));
 			gfx.fillRect(clip.x + FOLD_MARKER_SIZE, clip.y,
 				clip.width - FOLD_MARKER_SIZE, clip.height);
 		}
+
 		// if buffer is loading, don't paint anything
 		if (textArea.getBuffer().isLoading())
 			return;
@@ -292,9 +296,9 @@ public class Gutter extends JComponent implements SwingConstants
 	 */
 	public void updateBorder()
 	{
-		if (textArea.hasFocus())
-			setBorder(focusBorder);
-		else
+//		if (textArea.hasFocus())
+//			setBorder(focusBorder);
+//		else
 			setBorder(noFocusBorder);
 	} //}}}
 
@@ -398,6 +402,7 @@ public class Gutter extends JComponent implements SwingConstants
 	@Override
 	public void setFont(Font font)
 	{
+		font = new Font(GUIUtilities.fontName, Font.PLAIN, 11);
 		super.setFont(font);
 
 		fm = getFontMetrics(font);
@@ -874,13 +879,19 @@ public class Gutter extends JComponent implements SwingConstants
 
 			if (physicalLine == textArea.getCaretLine() && currentLineHighlightEnabled)
 			{
+				currentLineHighlight = new Color(192, 192, 192);
+				gfx.setBackground(new Color(255, 250, 227));
 				gfx.setColor(currentLineHighlight);
 			}
-			else if (interval > 1 && (physicalLine + 1) % interval == 0)
+			else if (interval > 1 && (physicalLine + 1) % interval == 0) {
+				intervalHighlight  = new Color(192, 192, 192);
 				gfx.setColor(intervalHighlight);
+				gfx.setBackground(new Color(240, 240, 240));
+			}
 			else
 				gfx.setColor(getForeground());
 
+			gfx.setColor(Color.gray);
 			gfx.drawString(number, FOLD_MARKER_SIZE + offset,
 				baseline + y);
 		} //}}}

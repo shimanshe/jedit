@@ -41,16 +41,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.LayoutFocusTraversalPolicy;
-import javax.swing.MenuSelectionManager;
+import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
@@ -1375,6 +1366,8 @@ public class View extends JFrame implements InputHandlerProvider
 		topToolBars = new JPanel(new VariableGridLayout(
 			VariableGridLayout.FIXED_NUM_COLUMNS,
 			1));
+
+        GUIUtilities.setBottomBorder(topToolBars);
 		bottomToolBars = new JPanel(new VariableGridLayout(
 			VariableGridLayout.FIXED_NUM_COLUMNS,
 			1));
@@ -1391,6 +1384,7 @@ public class View extends JFrame implements InputHandlerProvider
 		getContentPane().add(BorderLayout.CENTER,dockableWindowManager);
 
 		dockableWindowManager.init();
+		GUIUtilities.setRightBorder(dockableWindowManager);
 
 		// tool bar and status bar gets added in propertiesChanged()
 		// depending in the 'tool bar alternate layout' setting.

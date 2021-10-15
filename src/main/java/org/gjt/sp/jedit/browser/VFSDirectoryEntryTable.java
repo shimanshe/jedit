@@ -529,7 +529,7 @@ public class VFSDirectoryEntryTable extends JTable
 		for(int i = 1; i < widths.length; i++)
 		{
 			//String extAttr = model.getExtendedAttribute(i);
-			widths[i] = Math.max(widths[i],model.getColumnWidth(i));
+//			widths[i] = Math.max(widths[i],model.getColumnWidth(i));
 		}
 
 		for(int i = 0; i < model.files.length; i++)
@@ -552,8 +552,8 @@ public class VFSDirectoryEntryTable extends JTable
 			resizingColumns = true;
 			for(int i = 0; i < widths.length; i++)
 			{
-				columns.getColumn(i).setPreferredWidth(widths[i]);
-				columns.getColumn(i).setWidth(widths[i]);
+//				columns.getColumn(i).setPreferredWidth(widths[i]);
+//				columns.getColumn(i).setWidth(widths[i]);
 			}
 		}
 		finally

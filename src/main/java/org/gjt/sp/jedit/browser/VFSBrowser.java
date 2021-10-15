@@ -52,6 +52,8 @@ import org.gjt.sp.jedit.*;
 import org.gjt.sp.jedit.buffer.JEditBuffer;
 import org.gjt.sp.util.*;
 import org.gjt.sp.jedit.menu.MenuItemTextComparator;
+
+import static javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS;
 //}}}
 
 /**
@@ -197,6 +199,7 @@ public class VFSBrowser extends JPanel implements DefaultFocusComponent,
 		toolbarBox = new Box(horizontalLayout
 			? BoxLayout.X_AXIS
 			: BoxLayout.Y_AXIS);
+
 
 		topBox.add(toolbarBox);
 
@@ -346,6 +349,7 @@ public class VFSBrowser extends JPanel implements DefaultFocusComponent,
 		if(isHorizontalLayout())
 			browserView.setBorder(new EmptyBorder(0,12,0,12));
 		defaultFocusComponent = browserView.getTable();
+		((VFSDirectoryEntryTable) defaultFocusComponent).setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
 		propertiesChanged();
 
 		updateFilterEnabled();
@@ -1535,12 +1539,15 @@ check_selected:
 		if(jEdit.getBooleanProperty("vfs.browser.showToolbar"))
 		{
 			Container toolbar = createToolBar();
+			GUIUtilities.setBottomBorder((JToolBar)toolbar);
 			toolbarBox.add(toolbar);
 		}
 
 		if(jEdit.getBooleanProperty("vfs.browser.showMenubar"))
 		{
 			Container menubar = createMenuBar();
+
+			GUIUtilities.setBottomBorder((JToolBar)menubar);
 			if(horizontalLayout)
 			{
 				toolbarBox.add(menubar,0);

@@ -829,6 +829,8 @@ public class EditPane extends JPanel implements BufferSetListener
 
 		init = false;
 		EditBus.addToBus(this);
+
+		GUIUtilities.setLeftBorder(this);
 	} //}}}
 
 	//{{{ close() method

@@ -47,26 +47,7 @@ import java.util.List;
 import java.lang.ref.SoftReference;
 
 import javax.annotation.Nonnull;
-import javax.swing.AbstractButton;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.JToolBar;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 
 import java.awt.*;
@@ -100,6 +81,13 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class GUIUtilities
 {
+
+	public static Color gutterBgColor = new Color(240, 240, 240);//"f0f0f0"
+	public static Color caretRowColor = new Color(255, 250, 227);//"fffae3"
+	public static Color borderColor = new Color(219, 219, 219);
+	public static String fontName = "DialogInput";
+//	public static String fontName = "Microsoft YaHei";
+
 	//{{{ Icon methods
 
 	//{{{ setIconPath() method
@@ -563,6 +551,18 @@ public class GUIUtilities
 		b.setPreferredSize(new Dimension(32,32));
 		return b;
 	} //}}}
+
+	public static void setBottomBorder(JComponent component){
+		component.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(192, 192, 192)));
+	}
+
+	public static void setLeftBorder(JComponent component){
+		component.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, new Color(192, 192, 192)));
+	}
+
+	public static void setRightBorder(JComponent component){
+		component.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.red));//new Color(192, 192, 192)));
+	}
 
 	//{{{ prettifyMenuLabel() method
 	/**

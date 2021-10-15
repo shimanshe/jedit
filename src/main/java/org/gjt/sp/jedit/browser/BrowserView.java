@@ -83,6 +83,8 @@ class BrowserView extends JPanel
 			? JSplitPane.HORIZONTAL_SPLIT : JSplitPane.VERTICAL_SPLIT,
 			parentScroller, tableScroller);
 		splitPane.setOneTouchExpandable(true);
+//		splitPane.setDividerLocation(300);
+        splitPane.setDividerLocation(.5f);
 
 		EventQueue.invokeLater(() -> parentDirectories.ensureIndexIsVisible(parentDirectories.getModel().getSize()));
 
@@ -169,7 +171,8 @@ class BrowserView extends JPanel
 
 			// -1 means the divider should be reset to a value that attempts
 			// to honor the preferred size of the left/top component
-			splitPane.setDividerLocation(-1);
+//			splitPane.setDividerLocation(-1);
+            splitPane.setDividerLocation(.4f);
 		};
 		ThreadUtilities.runInBackground(new ListDirectoryBrowserTask(browser,
 			session, vfs, path, loadInfo, awtRunnable));
