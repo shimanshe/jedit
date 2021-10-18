@@ -41,6 +41,11 @@ import org.gjt.sp.util.Log;
 import org.gjt.sp.util.SyntaxUtilities;
 
 
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -58,6 +63,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 //}}}
 
 /** Various GUI utility functions related to icons, menus, toolbars, keyboard shortcuts, etc.
@@ -87,6 +94,7 @@ public class GUIUtilities
 	public static Color borderColor = new Color(219, 219, 219);
 	public static String fontName = "DialogInput";
 //	public static String fontName = "Microsoft YaHei";
+public static final int BUFFER_SIZE = 1024 * 10;
 
 	//{{{ Icon methods
 
@@ -2198,4 +2206,122 @@ public class GUIUtilities
 	} //}}}
 
 	//}}}
+
+
+	public static String removeLeft(String text, String search){
+		int pos = text.indexOf(search);
+		if(pos == -1){
+			return text;
+		}
+		return text.substring(pos+search.length());
+	}
+
+	public static String removeRight(String text, String search) {
+		int pos = text.lastIndexOf(search);
+		if (pos != -1) {
+			text = text.substring(0, pos);
+		}
+		return text;
+	}
+
+	public static  void copyResources(String dir, File target){
+	    if(target.isDirectory()){
+	       return;
+        }
+	    List<String> list = listResource(dir);
+	    for(String path : list){
+	        copyResource("/"+dir+"/"+path, new File(target, path));
+        }
+    }
+
+    public static void copyResource(String path, File target){
+//	    System.out.print("copy "+path+"->"+target);
+        InputStream in = GUIUtilities.class.getResourceAsStream(path);
+        if(in == null){
+            return;
+        }
+        copy(in, target);
+    }
+
+    public static boolean copy(InputStream in, File target){
+        byte[] buffer = new byte[BUFFER_SIZE];
+        FileOutputStream out = null;
+        try {
+            target.getParentFile().mkdirs();
+            out = new FileOutputStream(target);
+            while (true) {
+                int read = in.read(buffer);
+                if(read == -1){
+                    break;
+                }
+                out.write(buffer, 0, read);
+            }
+            out.flush();
+        }catch (Exception ex){
+            return false;
+        }finally {
+            close(in, out);
+        }
+        return true;
+    }
+
+    public static void close(Closeable... objects) {
+        for (Closeable obj : objects) {
+            if (obj != null) {
+                try {
+                    obj.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+	public static List<String> listResource(String path){
+		List<String> result = new ArrayList<String>();
+		if(!path.startsWith("/")){
+			path = "/"+path;
+		}
+		try {
+			URI uri = GUIUtilities.class.getResource("").toURI();
+			if (uri.getScheme().equals("jar")) {
+				String text = uri.toString();
+				text = removeLeft(text, "jar:file:");
+				text = removeRight(text, "!");
+				ZipFile zip = new ZipFile(text);
+				Enumeration enumeration = zip.entries();
+				while(enumeration.hasMoreElements()){
+					ZipEntry entry = (ZipEntry)enumeration.nextElement();
+					String name = entry.getName();
+					if(!name.startsWith("/")){
+						name = "/"+name;
+					}
+					if(name.startsWith(path)&&!entry.isDirectory()){
+						name = name.substring(path.length());
+						if(name.startsWith("/")){
+							name = name.substring(1);
+						}
+//						if(!name.contains("/")){
+							result.add(name);
+//						}
+					}
+				}
+			}else{
+				URL url = GUIUtilities.class.getResource(path);
+				if(url!=null) {
+					File dir = new File(url.toURI());
+					if (dir.isDirectory()) {
+						for (File file : dir.listFiles()) {
+//							if (file.isFile()) {
+								result.add(file.getName());
+//							}
+						}
+					}
+				}
+			}
+		}catch (Exception ex){
+			ex.printStackTrace();
+		}
+		return result;
+	}
 }

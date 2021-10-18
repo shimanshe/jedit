@@ -22,61 +22,120 @@
 package org.gjt.sp.jedit;
 
 //{{{ Imports
-import java.io.Closeable;
-import java.io.IOException;
-
-import org.gjt.sp.jedit.datatransfer.JEditTransferableService;
-import org.gjt.sp.jedit.gui.tray.JTrayIconManager;
-import org.gjt.sp.jedit.manager.*;
-import org.gjt.sp.util.*;
-import org.jedit.core.MigrationService;
-import org.jedit.migration.OneTimeMigrationService;
-import org.jedit.keymap.KeymapManager;
-import org.jedit.keymap.KeymapManagerImpl;
-import org.gjt.sp.jedit.visitors.JEditVisitor;
-
-import java.awt.*;
 
 import org.gjt.sp.jedit.View.ViewConfig;
 import org.gjt.sp.jedit.bsh.UtilEvalError;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.event.*;
-import java.io.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.MessageFormat;
-import java.util.*;
-import java.util.List;
-import java.lang.reflect.InvocationTargetException;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
-
-import org.xml.sax.SAXParseException;
-
-import org.gjt.sp.jedit.bufferio.BufferIORequest;
-import org.gjt.sp.jedit.buffer.KillRing;
-import org.gjt.sp.jedit.buffer.JEditBuffer;
 import org.gjt.sp.jedit.buffer.FoldHandler;
-import org.gjt.sp.jedit.msg.*;
-import org.gjt.sp.jedit.gui.*;
+import org.gjt.sp.jedit.buffer.JEditBuffer;
+import org.gjt.sp.jedit.buffer.KillRing;
+import org.gjt.sp.jedit.bufferio.BufferIORequest;
+import org.gjt.sp.jedit.bufferset.BufferSet;
+import org.gjt.sp.jedit.bufferset.BufferSetManager;
+import org.gjt.sp.jedit.datatransfer.JEditTransferableService;
+import org.gjt.sp.jedit.gui.ActionBar;
+import org.gjt.sp.jedit.gui.CloseDialog;
+import org.gjt.sp.jedit.gui.DefaultInputHandler;
+import org.gjt.sp.jedit.gui.DockableWindowFactory;
+import org.gjt.sp.jedit.gui.DockableWindowManager;
+import org.gjt.sp.jedit.gui.DockingLayoutManager;
+import org.gjt.sp.jedit.gui.ErrorListDialog;
+import org.gjt.sp.jedit.gui.HistoryModel;
+import org.gjt.sp.jedit.gui.InputHandler;
+import org.gjt.sp.jedit.gui.JEditHistoryModelSaver;
+import org.gjt.sp.jedit.gui.TipOfTheDay;
+import org.gjt.sp.jedit.gui.tray.JTrayIconManager;
 import org.gjt.sp.jedit.help.HelpViewer;
-import org.gjt.sp.jedit.io.*;
+import org.gjt.sp.jedit.io.CharsetEncoding;
+import org.gjt.sp.jedit.io.Encoding;
+import org.gjt.sp.jedit.io.FavoritesVFS;
+import org.gjt.sp.jedit.io.VFS;
+import org.gjt.sp.jedit.io.VFSManager;
+import org.gjt.sp.jedit.manager.BufferManager;
+import org.gjt.sp.jedit.manager.BufferManagerImpl;
+import org.gjt.sp.jedit.manager.EditPaneManager;
+import org.gjt.sp.jedit.manager.EditPaneManagerImpl;
+import org.gjt.sp.jedit.manager.ViewManager;
+import org.gjt.sp.jedit.manager.ViewManagerImpl;
+import org.gjt.sp.jedit.msg.BufferUpdate;
+import org.gjt.sp.jedit.msg.DynamicMenuChanged;
+import org.gjt.sp.jedit.msg.EditorExitRequested;
+import org.gjt.sp.jedit.msg.EditorExiting;
+import org.gjt.sp.jedit.msg.EditorStarted;
+import org.gjt.sp.jedit.msg.PluginUpdate;
+import org.gjt.sp.jedit.msg.PropertiesChanged;
+import org.gjt.sp.jedit.msg.ViewUpdate;
 import org.gjt.sp.jedit.pluginmgr.PluginManager;
 import org.gjt.sp.jedit.search.SearchAndReplace;
 import org.gjt.sp.jedit.syntax.Chunk;
 import org.gjt.sp.jedit.syntax.ModeProvider;
 import org.gjt.sp.jedit.syntax.TokenMarker;
 import org.gjt.sp.jedit.syntax.XModeHandler;
-import org.gjt.sp.jedit.textarea.*;
+import org.gjt.sp.jedit.textarea.DisplayManager;
+import org.gjt.sp.jedit.textarea.JEditTextArea;
+import org.gjt.sp.jedit.textarea.Selection;
+import org.gjt.sp.jedit.visitors.JEditVisitor;
 import org.gjt.sp.jedit.visitors.SaveCaretInfoVisitor;
-import org.gjt.sp.jedit.bufferset.BufferSetManager;
-import org.gjt.sp.jedit.bufferset.BufferSet;
+import org.gjt.sp.util.AwtRunnableQueue;
+import org.gjt.sp.util.GenericGUIUtilities;
+import org.gjt.sp.util.IOUtilities;
+import org.gjt.sp.util.Log;
+import org.gjt.sp.util.StandardUtilities;
+import org.gjt.sp.util.SyntaxUtilities;
+import org.gjt.sp.util.TaskManager;
+import org.gjt.sp.util.XMLUtilities;
+import org.jedit.core.MigrationService;
+import org.jedit.keymap.KeymapManager;
+import org.jedit.keymap.KeymapManagerImpl;
+import org.jedit.migration.OneTimeMigrationService;
+import org.xml.sax.SAXParseException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.Closeable;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.net.Authenticator;
+import java.net.InetAddress;
+import java.net.PasswordAuthentication;
+import java.net.Socket;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.EventObject;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.Vector;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.lang.Integer.parseInt;
 //}}}
@@ -108,6 +167,15 @@ public class jEdit
 		return "05.06.99.00";
 	} //}}}
 
+    public static void remoteBreakPoint(){
+        System.out.println("Press any key to continue");
+        try {
+            System.in.read();
+        }catch (Exception ex){
+
+        }
+    }
+
 	//{{{ main() method
 	/**
 	 * The main method of the jEdit application.
@@ -117,7 +185,14 @@ public class jEdit
 	public static void main(String[] args)
 	{
 
+//        remoteBreakPoint();
         setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+        File current = new File("");
+        String[] resources = {"doc", "de", "keymaps", "misc", "modes"};
+        for(String dir : resources) {
+			GUIUtilities.copyResources(dir, new File(dir));
+		}
 
 //		args = new String[]{"-log=1"};
 		// doing a copy to log it later as original args array is modified

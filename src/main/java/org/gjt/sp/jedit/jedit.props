@@ -545,3 +545,5 @@ view.style.foldLine.0=color\:\#ff000000 bgColor\:\#ffffffff style\:b
 view.style.foldLine.1=color\:\#ff000000 bgColor\:\#ffffffff style\:b
 view.style.foldLine.2=color\:\#ff000000 bgColor\:\#ffffffff style\:b
 view.style.foldLine.3=color\:\#ff000000 bgColor\:\#ffffffff style\:b
+
+fallbackEncodings=gbk utf-8
