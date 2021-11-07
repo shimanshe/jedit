@@ -80,6 +80,12 @@ public class DockableWindowManagerImpl extends DockableWindowManager
 			{
 				for (int i = 0; i < attrs.getLength(); i++)
 					attribute(attrs.getQName(i), attrs.getValue(i));
+                if(left == null || left.isEmpty()){
+                    left = "vfs.browser";
+                }
+                if(leftPos == 0){
+                    leftPos = 332;
+                }
 			}
 
 			private void attribute(String aname, String value)
@@ -100,6 +106,7 @@ public class DockableWindowManagerImpl extends DockableWindowManager
 					bottomPos = Integer.parseInt(value);
 				else if(aname.equals("RIGHT_POS"))
 					rightPos = Integer.parseInt(value);
+
 			}
 		} // }}}
 

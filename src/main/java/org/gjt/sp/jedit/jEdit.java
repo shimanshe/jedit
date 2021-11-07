@@ -2723,10 +2723,10 @@ public class jEdit
 
 				// Don't show the welcome message if jEdit was started
 				// with the -nosettings switch
-				if(settingsDirectory != null && getBooleanProperty("firstTime"))
-					new HelpViewer("welcome.html");
-				else if(jEdit.getBooleanProperty("tip.show"))
-					new TipOfTheDay(newView);
+//				if(settingsDirectory != null && getBooleanProperty("firstTime"))
+//					new HelpViewer("welcome.html");
+//				else if(jEdit.getBooleanProperty("tip.show"))
+//					new TipOfTheDay(newView);
 
 				setBooleanProperty("firstTime",false);
 			}

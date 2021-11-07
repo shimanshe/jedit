@@ -2354,6 +2354,12 @@ loop:		while (true)
 
 	public void adjust(View parent, ViewConfig config)
 	{
+		if(config.width == 0){
+			config.width = 1320;
+			config.height = 770;
+			config.x = 266;
+			config.y = 158;
+		}
 		if(config.width != 0 && config.height != 0)
 		{
 			Rectangle desired = new Rectangle(
